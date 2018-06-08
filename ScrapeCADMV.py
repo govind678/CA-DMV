@@ -27,7 +27,25 @@ import time
 from threading import Event, Thread
 
 
+# ===============================================================================
+# DMV Info
+# ===============================================================================
+url = 'https://www.dmv.ca.gov/wasapp/foa/clear.do?goTo=officeVisit&localeName=en'
+form_name = "ApptForm" # Method: POST
 
+# Form To Fill
+FIRSTNAME = 'JANE'
+LASTNAME = 'DOE'
+TELAREA = '123'
+TELPREFIX = '456'
+TELSUFFIX = '7890'
+# OFFICE_ID = "503" # Test SF
+
+
+
+# ===============================================================================
+# DMV Browser Query Object
+# ===============================================================================
 class DMVAppointment(object):
 
 
@@ -38,9 +56,9 @@ class DMVAppointment(object):
 
 	def run(self):
 
-# ===============================================================================
-# Browser Setup
-# ===============================================================================
+		# =======================================================================
+		# Browser Setup
+		# =======================================================================
 
 		# Browser
 		br = mechanize.Browser()
@@ -79,20 +97,9 @@ class DMVAppointment(object):
 		    ssl._create_default_https_context = _create_unverified_https_context
 
 
-# ===============================================================================
-# Open Page
-# ===============================================================================
-
-		url = 'https://www.dmv.ca.gov/wasapp/foa/clear.do?goTo=officeVisit&localeName=en'
-		form_name = "ApptForm" # Method: POST
-
-		# Form To Fill
-		FIRSTNAME = 'JANE'
-		LASTNAME = 'DOE'
-		TELAREA = '123'
-		TELPREFIX = '456'
-		TELSUFFIX = '7890'
-		# OFFICE_ID = "503" # Test SF
+		# =======================================================================
+		# Open Page
+		# =======================================================================
 
 		response = br.open(url)
 		html = response.read()
@@ -137,7 +144,14 @@ class DMVAppointment(object):
 		self.ready.set()
 
 
-# Start
+
+
+
+# ===============================================================================
+# Run Script
+# ===============================================================================
+
+print "Pinging: %s" % url
 print "Next open DMV appointment times in the Bay Area:"
 
 
