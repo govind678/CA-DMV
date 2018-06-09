@@ -140,6 +140,9 @@ class DMVAppointment(object):
 
 		# Does Appointment time fit criteria?
 		if APPT_MONTH in appointment:
+
+			print "Found matching time. Booking the appointment..."	
+
 			br.select_form(id="formId_1")
 
 			# Submit
@@ -215,7 +218,7 @@ for office in array:
 	thread.start()
 	ready.wait()
 	if program.booked==True:
-		print "Appointment Confirmed!"
+		print "Appointment Confirmed! To verify: https://www.dmv.ca.gov/wasapp/foa/clear.do?goTo=viewCancel"
 		del program
 		break
 	del program
