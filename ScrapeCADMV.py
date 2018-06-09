@@ -30,17 +30,19 @@ from threading import Event, Thread
 # ===============================================================================
 # DMV Info
 # ===============================================================================
-url = 'https://www.dmv.ca.gov/wasapp/foa/clear.do?goTo=officeVisit&localeName=en'
-form_name = "ApptForm" # Method: POST
+url = "https://www.dmv.ca.gov/wasapp/foa/clear.do?goTo=officeVisit&localeName=en"
 
-# Form To Fill
-FIRSTNAME = 'JANE'
-LASTNAME = 'DOE'
-TELAREA = '123'
-TELPREFIX = '456'
-TELSUFFIX = '7890'
+# Form To Fill 
+FIRSTNAME = "GOVINDA RAM"
+LASTNAME = "PINGALI"
+TELAREA = "678"
+TELPREFIX = "644"
+TELSUFFIX = "4488"
+EMAIL = "govind678@gmail.com"
 # OFFICE_ID = "503" # Test SF
 
+# Criteria for making an appointment
+APPT_MONTH = "June"
 
 
 # ===============================================================================
@@ -52,6 +54,7 @@ class DMVAppointment(object):
 	def __init__(self, id, ready=None):
 		self.ready = ready
 		self.id = id
+		self.booked = False
 
 
 	def run(self):
@@ -101,27 +104,26 @@ class DMVAppointment(object):
 		# Open Page
 		# =======================================================================
 
-		response = br.open(url)
-		html = response.read()
+		br.open(url)
 
 		# Select Form
 		index = 0
 		for form in br.forms():
-			if form.name == form_name:
+			if form.name == "ApptForm":
 				break
 			index += 1
 
 		br.select_form(nr=index)
 
 		# Fill DMV Appointment Form
-		br['officeId']=[self.id]
-		br['numberItems']=["1"]
-		br['taskRID']=["true"]	# RealID. Use 'taskCID' for CA ID or 'taskVR' for Vehicle Registration
-		br['firstName']=FIRSTNAME
-		br['lastName']=LASTNAME
-		br['telArea']=TELAREA
-		br['telPrefix']=TELPREFIX
-		br['telSuffix']=TELSUFFIX
+		br["officeId"]=[self.id]
+		br["numberItems"]=["1"]
+		br["taskRID"]=["true"]	# RealID. Use 'taskCID' for CA ID or 'taskVR' for Vehicle Registration
+		br["firstName"]=FIRSTNAME
+		br["lastName"]=LASTNAME
+		br["telArea"]=TELAREA
+		br["telPrefix"]=TELPREFIX
+		br["telSuffix"]=TELSUFFIX
 
 		# Submit
 		br.submit()
@@ -133,14 +135,57 @@ class DMVAppointment(object):
 		office = soup.find("td", {"data-title" : "Office"}).find("p").contents[0].strip()
 		appointment = soup.find("td", {"data-title" : "Appointment"}).findAll("p")[1].find("strong").contents[0].strip()
 
-		# Close
-		br.close()
-
-		# Result
+		# Appointment Time
 		print "%s at %s" % (office, appointment)
 
+		# Does Appointment time fit criteria?
+		if APPT_MONTH in appointment:
+			br.select_form(id="formId_1")
 
-	def __del__(self):
+			# Submit
+			br.submit()
+			
+			# Override Previous Appointment
+			br.select_form(id="ApptForm")
+
+			# Submit
+			br.submit()
+
+			# Notifications Page
+			index = 0
+			for form in br.forms():
+				if form.name == "ApptForm":
+					break
+				index += 1
+
+			br.select_form(nr=index)
+			br["notificationMethod"]=["EMAIL"]
+			br["notify_email"]=EMAIL
+			br["notify_email_confirm"]=EMAIL
+			br.submit()
+
+			# Finalize Appointment
+			br.select_form(id="ApptForm")
+			br.submit()
+
+			# Make Soup
+			# soup = BeautifulSoup(br.response().read(), 'html.parser')
+
+			self.booked = True
+
+			# # Email Confirmation
+			# # Cannot get this JS to work with Python :(
+			# br.select_form(id="ApptForm")
+			# print(br.form)
+			# br["emailAddress"]=EMAIL
+			# br["validateEmailAddress"]=EMAIL
+			# # br.form.action="button_action"
+			# br.submit()
+
+			# print (br.response().read())
+		
+		# Close
+		br.close()
 		self.ready.set()
 
 
@@ -156,6 +201,7 @@ print "Next open DMV appointment times in the Bay Area:"
 
 
 # Read place IDs JSON
+# Edit the JSON file to choose the order of preference
 with open("CADMV_Info.json") as file:
 	data = json.load(file)
 	array = data["BayArea"]
@@ -167,5 +213,9 @@ for office in array:
 	program = DMVAppointment(office["officeID"], ready)
 	thread = Thread(target=program.run)
 	thread.start()
-	del program
 	ready.wait()
+	if program.booked==True:
+		print "Appointment Confirmed!"
+		del program
+		break
+	del program

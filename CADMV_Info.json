@@ -1,4 +1,27 @@
 {
+	"BayArea" :
+	[
+		{"officeID":"503", "place":"SAN FRANCISCO"},
+		{"officeID":"599", "place":"DALY CITY"},
+		{"officeID":"504", "place":"OAKLAND CLAREMONT"},
+		{"officeID":"604", "place":"OAKLAND COLISEUM"},
+		{"officeID":"579", "place":"HAYWARD"},
+		{"officeID":"644", "place":"FREMONT"},
+		{"officeID":"593", "place":"SAN MATEO"},
+		{"officeID":"548", "place":"REDWOOD CITY"},
+		{"officeID":"632", "place":"SANTA CLARA"},
+		{"officeID":"516", "place":"SAN JOSE"},
+		{"officeID":"645", "place":"SAN JOSE DLPC"},
+		{"officeID":"534", "place":"CORTE MADERA"},
+		{"officeID":"624", "place":"WALNUT CREEK"},
+		{"officeID":"556", "place":"EL CERRITO"},
+		{"officeID":"523", "place":"CONCORD"},
+		{"officeID":"550", "place":"CAPITOLA"},
+		{"officeID":"592", "place":"PITTSBURG"},
+		{"officeID":"631", "place":"PLEASANTON"}
+	],
+
+
 	"California" :
 	[
 		{"officeID":"537", "place":"ALTURAS"},
@@ -174,33 +197,5 @@
 		{"officeID":"561", "place":"WOODLAND"},
 		{"officeID":"552", "place":"YREKA"},
 		{"officeID":"562", "place":"YUBA CITY"}
-	],
-
-	"BayArea" :
-	[
-		{"officeID":"550", "place":"CAPITOLA"},
-		{"officeID":"523", "place":"CONCORD"},
-		{"officeID":"534", "place":"CORTE MADERA"},
-		{"officeID":"599", "place":"DALY CITY"},
-		{"officeID":"556", "place":"EL CERRITO"},
-		{"officeID":"621", "place":"FAIRFIELD"},
-		{"officeID":"644", "place":"FREMONT"},
-		{"officeID":"623", "place":"GILROY"},
-		{"officeID":"579", "place":"HAYWARD"},
-		{"officeID":"504", "place":"OAKLAND CLAREMONT"},
-		{"officeID":"604", "place":"OAKLAND COLISEUM"},
-		{"officeID":"634", "place":"PETALUMA"},
-		{"officeID":"592", "place":"PITTSBURG"},
-		{"officeID":"631", "place":"PLEASANTON"},
-		{"officeID":"548", "place":"REDWOOD CITY"},
-		{"officeID":"539", "place":"SALINAS"},
-		{"officeID":"503", "place":"SAN FRANCISCO"},
-		{"officeID":"516", "place":"SAN JOSE"},
-		{"officeID":"645", "place":"SAN JOSE DLPC"},
-		{"officeID":"593", "place":"SAN MATEO"},
-		{"officeID":"632", "place":"SANTA CLARA"},
-		{"officeID":"554", "place":"VALLEJO"},
-		{"officeID":"624", "place":"WALNUT CREEK"},
-		{"officeID":"583", "place":"WATSONVILLE"}
 	]
 }
